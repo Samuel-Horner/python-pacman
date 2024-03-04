@@ -33,6 +33,7 @@ class Ghost(Entity):
         self.dir = 1
         self.last_pos = self.pos
         self.scared = False
+        self.cd = 0
 
     def move(self): pass
 
@@ -46,6 +47,9 @@ class Blinky(Ghost): # Red
         return "\x1b[1;31m\u15E3\x1b[0m"
     
     def move(self, game_board, goal_pos):
+        if self.cd > 0: 
+            self.cd -= 1
+            return
         if self.scared: goal_pos = self.home_pos
         min_dist = -1
         min_new_pos = self.pos
@@ -69,6 +73,9 @@ class Pinky(Ghost): # Pink
         return "\x1b[1;35m\u15E3\x1b[0m"
     
     def move(self, game_board, goal_pos):
+        if self.cd > 0: 
+            self.cd -= 1
+            return
         if self.scared: goal_pos = self.home_pos
         min_dist = -1
         min_new_pos = self.pos
@@ -92,6 +99,9 @@ class Inky(Ghost): # Cyan
         return "\x1b[1;36m\u15E3\x1b[0m"
         
     def move(self, game_board, goal_pos):
+        if self.cd > 0: 
+            self.cd -= 1
+            return
         if self.scared: goal_pos = self.home_pos
         min_dist = -1
         min_new_pos = self.pos
@@ -115,6 +125,9 @@ class Clyde(Ghost): # Orange
         return "\x1b[1;33m\u15E3\x1b[0m"
         
     def move(self, game_board, goal_pos):
+        if self.cd > 0: 
+            self.cd -= 1
+            return
         if self.scared: goal_pos = self.home_pos
         min_dist = -1
         min_new_pos = self.pos
@@ -224,6 +237,7 @@ class Game:
                         break
                     elif self.pacman.pos == i.pos and i.scared:
                         i.pos = Pos(9,5)
+                        i.cd = 10
                         i.scared = False
 
                 if loss_flag: break
@@ -250,6 +264,7 @@ class Game:
                         break
                     elif self.pacman.pos == i.pos and i.scared:
                         i.pos = Pos(9,5)
+                        i.cd = 10
                         i.scared = False
 
                 if loss_flag: break
