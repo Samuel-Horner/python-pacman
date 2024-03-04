@@ -210,12 +210,23 @@ class Game:
                 self.pacman.move(self.game_board)
                 if self.game_board[self.pacman.pos.y][self.pacman.pos.x] == 2:
                     self.score += 1
-                    self.game_board[self.pacman.pos.y][self.pacman.pos.x] =     0
+                    self.game_board[self.pacman.pos.y][self.pacman.pos.x] = 0
                 elif self.game_board[self.pacman.pos.y][self.pacman.pos.x] == 3:
                     for i in self.ghosts: i.scared = True
                     self.score += 1
                     last_invun_frame = self.frame_count
                     self.game_board[self.pacman.pos.y][self.pacman.pos.x] = 0
+
+                loss_flag = False
+                for i in self.ghosts:
+                    if self.pacman.pos == i.pos and not i.scared:
+                        loss_flag = True
+                        break
+                    elif self.pacman.pos == i.pos and i.scared:
+                        i.pos = Pos(9,5)
+                        i.scared = False
+
+                if loss_flag: break
 
                 if not scatter:
                     self.ghosts[0].move(self.game_board, self.pacman.pos)
